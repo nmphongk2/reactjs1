@@ -1,32 +1,29 @@
-
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-// import {Button,FormText} from 'react-bootstrap';
-// import StudentInfo1 from './compoents/Header/StudentInfo';
-// import { useState,useEffect } from 'react';
 import Login from './pages/login';
-import Register from './pages/Register';
+import Register from './pages/Register'
 import {
-RouterProvider,
-Route,
-createBrowserRouter,
- createRoutesFromElements
+  RouterProvider,
+  Route,
+  createBrowserRouter,
+  createRoutesFromElements
 } from 'react-router-dom'
+
 function App() {
-const router = createBrowserRouter (
-  createRoutesFromElements(
-<Route>
-  <Route path='/Login' element={<Login/>}/>
-  <Route path='/Register' element={<Register/>}/>
-</Route>
-  )
-);
-return (
-  <>
-  <RouterProvider Route={router} />
-  </>
-)
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Route>
+    )
+  );
+  return (
+    <RouterProvider router={router}/>
+  );
 }
+export default App;
+
 //   //[Biến dữ liệu, setter funct]
 // //npm i react-router-domnpm i react-router-dom cài router để giao diện
 // const [count, setCount] = useState([0]);
@@ -191,4 +188,4 @@ return (
 //   );
 // }
 
-export default App;
+// export default App;
