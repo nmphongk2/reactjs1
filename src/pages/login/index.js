@@ -78,35 +78,61 @@
 //   }
 //export default Login;
 import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import axios from 'axios';
+import { Cookies } from 'react-cookie';
+
+
+
 
 const Login = () => {
-  const [value, setValue] = useState({
-    username: '',
-    password: ''
-  });
-  const [errors, setErrors] = useState({});
+  const {login, setValue,setError, formState,reset,handleSubmit, getValues} = useForm()
 
-  const onTextChange = (e) => {
-    setValue({
-      ...value,
-      [e.target.name]: e.target.value
+const LoginSubmit = async (value) => {
+  try{
+    const res =  await axios.post("http://10.82.60.26:3001/user/register", {
+      username: value?.username,
+      password: value?.password,
+      device: "mobile"
     });
-  };
+    console.log("res===", res.data);
+    let cookie = new Cookies();
+    dateExpired.setDate(dateExpired.getDate() + 1);
+    cookie.set("token", res?.data?.access_token, {expires: dateExpired});
+    cookie.update();
+  
+  }catch(err) {
+    console.log("error===", err);
+  }
+}
+  
+  // const [value, setValue] = useState({
+  //   username: '',
+  //   password: ''
+  // });
+  // const [errors, setErrors] = useState({});
 
-  const handleLogin = () => {
-    let errorsTemp = {};
-    Object.keys(value).forEach((item) => {
-      if (value[item]?.trim() === '') {
-        errorsTemp[item] = 'Please enter complete info.';
-      }
-    });
-    setErrors(errorsTemp);
+  // const onTextChange = (e) => {
+  //   setValue({
+  //     ...value,
+  //     [e.target.name]: e.target.value
+  //   });
+  // };
+
+  // const handleLogin = () => {
+  //   let errorsTemp = {};
+  //   Object.keys(value).forEach((item) => {
+  //     if (value[item]?.trim() === '') {
+  //       errorsTemp[item] = 'Please enter complete info.';
+  //     }
+  //   });
+  //   setErrors(errorsTemp);
     // Handle login logic here
-  };
+  // };
 
-  useEffect(() => {
-    console.log("Value Change ===", value);
-  }, [value]);
+  // useEffect(() => {
+  //   console.log("Value Change ===", value);
+  // }, [value]);
 
   return (
     <div className='container'>
@@ -118,10 +144,9 @@ const Login = () => {
             type='text'
             name='username'
             className='form-control'
-            value={value.username}
-            onChange={onTextChange}
+        
           />
-          {errors?.username && <small className='text-danger'>{errors?.username}</small>}
+         
         </div>
         <div className='mb-3'>
           <label className='form-label'>Password</label>
@@ -129,16 +154,15 @@ const Login = () => {
             type='password'
             name='password'
             className='form-control'
-            value={value.password}
-            onChange={onTextChange}
+           
+        
           />
-          {errors?.password && <small className='text-danger'>{errors?.password}</small>}
+          
         </div>
-        <button className='btn btn-success w-100 mb-3' onClick={handleLogin}>{`Login`}</button>
+        <button className='btn btn-success w-100 mb-3' onClick={handleSubmit(LoginSubmit)}>{`Login`}</button>
         <a className='btn btn-primary w-auto me-3' href='/register'>Register</a>
       </div>
     </div>
-  );
-};
-
+  )
+}
 export default Login;

@@ -1,4 +1,5 @@
 import './App.css';
+import { Cookies } from 'react-cookie';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Login from './pages/login';
 import Register from './pages/Register'
@@ -8,6 +9,7 @@ import {
   createBrowserRouter,
   createRoutesFromElements
 } from 'react-router-dom'
+import { CookiesProvider } from 'react-cookie';
 
 function App() {
   const router = createBrowserRouter(
@@ -19,7 +21,11 @@ function App() {
     )
   );
   return (
+    <>
+    <CookiesProvider defaultSetOptions={"/"}>
     <RouterProvider router={router}/>
+</CookiesProvider>
+</>
   );
 }
 export default App;

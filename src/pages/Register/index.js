@@ -1,15 +1,42 @@
 import { getValue } from '@testing-library/user-event/dist/utils';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-
+import axios from 'axios';
 const usernameChange = (props) => {
     console.log("on username change === ", props);
 }
 const Register = () => {
 const {register, setValue,setError, formState,reset,handleSubmit, getValues} = useForm()
 
-const registerSubmit = (value) => {
+const registerSubmit = async (value) => {
 console.log(value);
+
+try{
+    const res =  await axios.post("http://10.82.60.26:3001/user/register", {
+        username: value?.username,
+        email:value?.email,
+        password: value?.password,
+        full_name: value?.full_name
+    });
+    console.log("respones====", res);
+    console.log("end call api");
+}catch(err) {
+    console.log("error===", err);
+}
+
+// axios.post("http://10.82.60.26:3001/user/register", {
+//     username: value?.username,
+//     email:value?.email,
+//     password: value?.password,
+//     full_name: value?.full_name
+// }).then(res =>{
+//     console.log("respones====", res?.data);
+// })
+// .catch((err) => {
+//     console.log("err=====", err?.response?.data);
+// });
+
+
 }
     return (
         <div className='container'>
@@ -77,28 +104,25 @@ console.log(value);
                 </div>
 
 
-            <div className='mb-3'>
-            <label className='form-label'>Email</label>
-            <input type='email' className='form-control' {...register('email',{
-                required: {
-                    value: true,
-                    message: "Email Không được bỏ trống"
-                },
-                pattern: {
-                    value: /^\$+$/i,
-                    message: "Email Không đúng định dạng",
-
-                }
-            })} />
-             {formState?.errors.email &&
+                <div className='mb-3'>
+                    <label className='form-label'>Email</label>
+                    <input name='email' type='email' className='form-control'{...register("email", {
+                        required: {
+                            value: true,
+                            message: " Email không được bỏ trống",
+                        },
+                        pattern: {
+                            value: /^\S+@\S+$/i,
+                            message: "Email không đúng định dạng",
+                        }
+                    })} />
+                    {formState?.errors?.email && (
                         <small className='text-danger'>
-                            {
-                                formState?.errors?.email.message
-                            }
+                            {formState?.errors?.email?.message}
                         </small>
-                    }
+                    )}
 
-            </div>
+                </div>
             <div className='mb-3'>
             <label className='form-label'>Họ Tên</label>
             <input type='text' className='form-control' onChange={usernameChange}/>
