@@ -2,7 +2,8 @@ import './App.css';
 import { Cookies } from 'react-cookie';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Login from './pages/login';
-import Register from './pages/Register'
+import Register from './pages/Register';
+import Profile from './pages/Profile'
 import {
   RouterProvider,
   Route,
@@ -17,6 +18,7 @@ function App() {
       <Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+       <Route path="/profile" element={<Profile />}/> 
       </Route>
     )
   );

@@ -12,7 +12,7 @@ const registerSubmit = async (value) => {
 console.log(value);
 
 try{
-    const res =  await axios.post("http://10.82.60.26:3001/user/register", {
+    const res =  await axios.post("http://172.16.21.214:3001/user/register", {
         username: value?.username,
         email:value?.email,
         password: value?.password,
@@ -132,12 +132,12 @@ try{
             <div className='form-check'>
             <input className='form-check-input' type='radio' value={"female"} 
             {...register("gender")} />
-            <label className='form-check-label' htmlForfor="">Nữ</label>
+            <label className='form-check-label' htmlFor="">Nữ</label>
             </div>
             <div className='form-check'>
             <input className='form-check-input' type='radio' value={"male"} 
             {...register("gender")} />
-            <label className='form-check-label' htmlForfor="">Nam</label>
+            <label className='form-check-label' htmlFor="">Nam</label>
             </div>
         </div>
         <div className='mb-3'>
@@ -154,11 +154,11 @@ try{
             <label className='form-label'>Sở thích</label>
             <div className='form-check'>
             <input className='form-check-input' name='check' id='check' type='checkbox' />
-            <label className='form-check-label' htmlForfor="">Du lịch</label>
+            <label className='form-check-label' htmlFor="">Du lịch</label>
             </div>
             <div className='form-check'>
             <input className='form-check-input' name='check'  id='check' type='checkbox' />
-            <label className='form-check-label' htmlForfor="">Thể thao</label>
+            <label className='form-check-label' htmlFor="">Thể thao</label>
             </div>
         </div>
             <button className='btn btn-success w-100 mb-3' onClick={handleSubmit(registerSubmit)}>{`Register`}</button>

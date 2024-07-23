@@ -1,6 +1,5 @@
 // import React, { useEffect, useState } from 'react';
 
-
 // // const [value, setValue] = useState({});
 // // const [errors, setErrors] = useState({});
 
@@ -18,7 +17,6 @@
 //   })
 //   }
 // const Login = () => {
-
 
 // let errorsTemp = {};
 // Object.keys(value).map((item, index)=>{
@@ -48,7 +46,6 @@
 // //   console.log("name ====", props.target.name);
 // //   console.log("value ====", props.target.value);
 
-
 // // }
 
 // useEffect( ()=>{
@@ -74,38 +71,55 @@
 //             </div>
 //         </div>
 //     );
-  
+
 //   }
 //export default Login;
-import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import axios from 'axios';
-import { Cookies } from 'react-cookie';
-
-
-
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import axios from "axios";
+import loginApi from "../../services/Auth";
+import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const {login, setValue,setError, formState,reset,handleSubmit, getValues} = useForm()
+  const {
+    login,
+    setValue,
+    setError,
+    formState,
+    reset,
+    handleSubmit,
+    getValues,
+  } = useForm();
+  const naviagate = useNavigate();
+  const [cookie, setCookie, removeCookie] = useCookies(["token"]);
+  const LoginSubmit = async (value) => {
 
-const LoginSubmit = async (value) => {
-  try{
-    const res =  await axios.post("http://10.82.60.26:3001/user/register", {
-      username: value?.username,
-      password: value?.password,
-      device: "mobile"
-    });
-    console.log("res===", res.data);
-    let cookie = new Cookies();
-    dateExpired.setDate(dateExpired.getDate() + 1);
-    cookie.set("token", res?.data?.access_token, {expires: dateExpired});
-    cookie.update();
-  
-  }catch(err) {
-    console.log("error===", err);
-  }
-}
-  
+    try {
+      
+      // const res = await axios.post("http://172.16.21.214:3001/auth/login", {
+      //   username: value?.username,
+      //   password: value?.password,
+      //   device: "website",
+      // });
+      const res = await loginApi({
+          username: value?.username,
+        password: value?.password,
+      })
+      console.log("res===", res.data);
+      if (res?.data?.access_token){
+        // let cookie = new Cookies();
+        const dateExpired = new Date();
+      dateExpired.setHours(dateExpired.getHours() + 1);
+     setCookie("token", res?.data?.access_token, { expires: dateExpired });
+      naviagate("/profile");
+      // cookie.update();
+      }
+    } catch (err) {
+      console.log("error===", err);
+    }
+  };
+
   // const [value, setValue] = useState({
   //   username: '',
   //   password: ''
@@ -127,7 +141,7 @@ const LoginSubmit = async (value) => {
   //     }
   //   });
   //   setErrors(errorsTemp);
-    // Handle login logic here
+  // Handle login logic here
   // };
 
   // useEffect(() => {
@@ -135,34 +149,26 @@ const LoginSubmit = async (value) => {
   // }, [value]);
 
   return (
-    <div className='container'>
-      <div className='col-4 offset-4'>
-        <h1 className='text-primary'>Login</h1>
-        <div className='mb-3'>
-          <label className='form-label'>Username</label>
-          <input
-            type='text'
-            name='username'
-            className='form-control'
-        
-          />
-         
+    <div className="container">
+      <div className="col-4 offset-4">
+        <h1 className="text-primary">Login</h1>
+        <div className="mb-3">
+          <label className="form-label">Username</label>
+          <input type="text" name="username" className="form-control"  />
         </div>
-        <div className='mb-3'>
-          <label className='form-label'>Password</label>
-          <input
-            type='password'
-            name='password'
-            className='form-control'
-           
-        
-          />
-          
+        <div className="mb-3">
+          <label className="form-label">Password</label>
+          <input type="password" name="password" className="form-control" />
         </div>
-        <button className='btn btn-success w-100 mb-3' onClick={handleSubmit(LoginSubmit)}>{`Login`}</button>
-        <a className='btn btn-primary w-auto me-3' href='/register'>Register</a>
+        <button
+          className="btn btn-success w-100 mb-3"
+          onClick={handleSubmit(LoginSubmit)}
+        >{`Login`}</button>
+        <a className="btn btn-primary w-auto me-3" href="/register">
+          Register
+        </a>
       </div>
     </div>
-  )
-}
+  );
+};
 export default Login;
