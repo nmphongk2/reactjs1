@@ -3,7 +3,9 @@ import { Cookies } from 'react-cookie';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Login from './pages/login';
 import Register from './pages/Register';
-import Profile from './pages/Profile'
+import { Provider } from 'react-redux';
+import store from './redux';
+import Profile from './pages/Profile';
 import {
   RouterProvider,
   Route,
@@ -24,9 +26,12 @@ function App() {
   );
   return (
     <>
+  
+<Provider store={store}>
     <CookiesProvider defaultSetOptions={"/"}>
     <RouterProvider router={router}/>
 </CookiesProvider>
+</Provider>
 </>
   );
 }

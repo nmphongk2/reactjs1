@@ -1,28 +1,58 @@
-import { getValue } from '@testing-library/user-event/dist/utils';
-import React from 'react';
-import { useForm } from 'react-hook-form';
-import axios from 'axios';
-const usernameChange = (props) => {
-    console.log("on username change === ", props);
-}
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import axios from "axios";
+
 const Register = () => {
-const {register, setValue,setError, formState,reset,handleSubmit, getValues} = useForm()
+  const {
+    register,
+    getValues,
+    handleSubmit,
+    setValue,
+    setError,
+    reset,
+    formState,
+  } = useForm();
 
-const registerSubmit = async (value) => {
-console.log(value);
+  const registerSubmit = async (value) => {
+    console.log("value submit === ", value);
 
-try{
-    const res =  await axios.post("http://172.16.21.214:3001/user/register", {
+    try {
+      console.log("start call api");
+      const res = await axios.post("http://10.82.60.85:3001/user/register", {
         username: value?.username,
-        email:value?.email,
+        email: value?.email,
         password: value?.password,
-        full_name: value?.full_name
-    });
-    console.log("respones====", res);
-    console.log("end call api");
-}catch(err) {
-    console.log("error===", err);
-}
+        full_name: value?.name,
+      });
+
+      console.log("response === ", res);
+      console.log("end call api");
+    } catch (err) {
+      console.log("error === ", err);
+    }
+
+    // {username: 'admin123', password: '123456', confirm: '123456', email: 'admin123@gmail.com', name: 'admin test'}
+
+    // axios
+    //   .post("http://10.82.60.26:3001/user/register", {
+    //     username: value?.username,
+    //     email: value?.email,
+    //     password: value?.password,
+    //     full_name: value?.name,
+    //   })
+    //   .then((res) => {
+    //     //api success
+    //     console.log("response === ", res?.data);
+    //   })
+    //   .catch((err) => {
+    //     //api error
+    //     console.log("error === ", err?.response?.data);
+    //   });
+
+    // console.log("submit data");
+  };
+
+
 
 // axios.post("http://10.82.60.26:3001/user/register", {
 //     username: value?.username,
@@ -37,7 +67,7 @@ try{
 // });
 
 
-}
+
     return (
         <div className='container'>
             <div className='col-4 offset-4'>
@@ -125,7 +155,7 @@ try{
                 </div>
             <div className='mb-3'>
             <label className='form-label'>Họ Tên</label>
-            <input type='text' className='form-control' onChange={usernameChange}/>
+            <input type='text' className='form-control'/>
             </div>
         <div className='mb-3'>
             <label className='form-label'>Giới tính</label>
